@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 function Card({
     children,
@@ -10,5 +11,14 @@ function Card({
     </div>
   )
 }
+
+Card.propTypes = {
+    children: PropTypes.node,
+    reverse: PropTypes.bool
+};
+
+Card.defaultProps = {
+    reverse: false
+};
 
 export default Card
