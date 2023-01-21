@@ -3,17 +3,23 @@ import FeedbackItem from './FeedbackItem';
 import PropTypes from 'prop-types'
 
 function FeedbackList({
-    feedbacks
+    feedbacks,
+    handleFeedbackDelete
 }) {
   return (
     <div className='feedback-list'>
-        {   
-            (feedbacks && feedbacks.length) 
-            ? (
-                feedbacks.map(item => (<FeedbackItem key={item.id} item={item} />) )
-            )
-            : 'No feedbacks yet..'
-        }
+      {   
+        (feedbacks && feedbacks.length) 
+        ? (
+          feedbacks.map(item => (
+            <FeedbackItem 
+              key={item.id} 
+              item={item} 
+              handleFeedbackDelete={handleFeedbackDelete}/>
+          ) )
+        )
+        : 'No feedbacks yet..'
+      }
     </div>
   )
 }

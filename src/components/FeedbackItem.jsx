@@ -7,8 +7,7 @@ function FeedbackItem({
   handleFeedbackDelete
 }) {
   const handleCloseClick = function() {
-    console.log('item ' + item.id + 'clicked for delete');
-    // handleFeedbackDelete(item.id);
+    handleFeedbackDelete(item.id);
   }
 
   return (

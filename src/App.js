@@ -7,11 +7,20 @@ function App() {
 
   const [allFeedbacks, setAllFeedbacks] = useState(feedbacks);
 
+  const eventHandlers = {
+    handleFeedbackDelete: function(feedbackId) {
+      console.log('To delete: ' + feedbackId);
+    }
+  };
+
   return (
     <>
       <Header headerTitle={'Any feedback for me..?'}/>
       <div className='container'>
-        <FeedbackList feedbacks={allFeedbacks} />
+        <FeedbackList 
+          feedbacks={allFeedbacks} 
+          handleFeedbackDelete={eventHandlers.handleFeedbackDelete}
+        />
       </div>
     </>
   );
