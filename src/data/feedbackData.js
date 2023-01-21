@@ -6,7 +6,8 @@ const feedbacks = [
       author: {
         firstName: 'John',
         lastName: 'Doe'
-      }
+      },
+      isDeleted: false
     },
     {
       id: 2,
@@ -15,7 +16,8 @@ const feedbacks = [
       author: {
         firstName: 'Jane',
         lastName: 'Doe'
-      }
+      },
+      isDeleted: false
     },
     {
       id: 3,
@@ -24,7 +26,8 @@ const feedbacks = [
       author: {
         firstName: 'Ronald',
         lastName: 'McGill'
-      }
+      },
+      isDeleted: false
     },
     {
       id: 4,
@@ -33,7 +36,8 @@ const feedbacks = [
       author: {
         firstName: 'Ben',
         lastName: 'Grover'
-      }
+      },
+      isDeleted: false
     }
   ];
 

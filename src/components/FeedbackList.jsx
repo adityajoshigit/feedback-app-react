@@ -9,14 +9,16 @@ function FeedbackList({
   return (
     <div className='feedback-list'>
       {   
-        (feedbacks && feedbacks.length) 
+        (feedbacks && feedbacks.filter(item => !item.isDeleted).length) 
         ? (
-          feedbacks.map(item => (
-            <FeedbackItem 
-              key={item.id} 
-              item={item} 
-              handleFeedbackDelete={handleFeedbackDelete}/>
-          ) )
+          feedbacks
+            .filter(item => !item.isDeleted )
+            .map(item => (
+              <FeedbackItem 
+                key={item.id} 
+                item={item} 
+                handleFeedbackDelete={handleFeedbackDelete}/>
+            ) )
         )
         : 'No feedbacks yet..'
       }

@@ -10,8 +10,17 @@ function App() {
   const eventHandlers = {
     handleFeedbackDelete: function(feedbackId) {
       console.log('To delete: ' + feedbackId);
+      let l = [];
+      allFeedbacks.forEach(item => {
+        l.push({
+          ...item, 
+          isDeleted: ( (item.id === feedbackId) ? true : item.isDeleted )
+        });
+      });
+      setAllFeedbacks(l);
     }
   };
+
 
   return (
     <>
