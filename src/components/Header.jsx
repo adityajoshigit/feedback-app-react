@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Header({
-  headerTitle
+  headerTitle,
+  headerTextColor
 }) {
   return (
     <header>
@@ -16,7 +17,8 @@ function Header({
 }
 
 Header.defaultProps = {
-  headerTitle: 'Hey there!'
+  headerTitle: 'Hey there!',
+  // headerTextColor: '#ff6a95'
 };
 
 Header.propTypes = {
