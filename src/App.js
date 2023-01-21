@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FeedbackItem from "./components/FeedbackItem";
+import FeedbackList from "./components/FeedbackList";
 import Header from "./components/Header";
 import feedbacks from "./data/feedbackData";
 
@@ -11,12 +11,7 @@ function App() {
     <>
       <Header headerTitle={'Any feedback for me..?'}/>
       <div className='container'>
-        <FeedbackItem item={{id: 1, description: 'something', rating: 10}} />
-        {/* {
-          allFeedbacks.forEach(feedbackItem => {
-            return <FeedbackItem item={feedbackItem} key={feedbackItem.id} />;
-          })
-        } */}
+        <FeedbackList feedbacks={allFeedbacks} />
       </div>
     </>
   );
