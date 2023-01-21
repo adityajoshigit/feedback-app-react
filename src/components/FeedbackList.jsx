@@ -6,8 +6,12 @@ function FeedbackList({
 }) {
   return (
     <div className='feedback-list'>
-        {
-            feedbacks.map(item => (<FeedbackItem key={item.id} item={item} />) )
+        {   
+            (feedbacks && feedbacks.length) 
+            ? (
+                feedbacks.map(item => (<FeedbackItem key={item.id} item={item} />) )
+            )
+            : 'No feedbacks yet..'
         }
     </div>
   )
