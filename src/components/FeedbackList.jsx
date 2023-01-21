@@ -23,11 +23,7 @@ FeedbackList.defaultProps = {
 };
 
 FeedbackList.propTypes = {
-    feedbacks: PropTypes.arrayOf({
-        id: PropTypes.number.isRequired,
-        description: PropTypes.string,
-        rating: PropTypes.string
-    })
+    feedbacks: PropTypes.array
 };
 
 export default FeedbackList;
