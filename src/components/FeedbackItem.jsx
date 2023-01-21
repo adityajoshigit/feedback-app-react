@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 function FeedbackItem({
   item
 }) {
+  
+  const [_item, setItem] = useState(item);
+
   return (
     <div className='card'>
       <div className='num-display'>
-        {item.rating}
+        {_item.rating}
       </div>
       <div className='text-display'>
-        {item.description}
+        {_item.description}
       </div>
     </div>
   )
