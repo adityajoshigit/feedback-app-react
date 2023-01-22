@@ -172,10 +172,14 @@ input:focus {
 
 .btn-primary {
     background-color: #202142;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn-secondary {
-    background: #ff6a95;
+    background-color: #ff6a95;
+    color: #202142;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn:hover {
