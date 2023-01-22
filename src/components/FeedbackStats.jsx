@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 function FeedbackStats({
   feedbacks
 }) {
-  if (Boolean(feedbacks)) {
+  if (!Boolean(feedbacks)) {
     return <></>;
   }
 
   const activeFeedbacks = feedbacks.filter(item => !item.isDeleted);
 
-  if (Boolean(activeFeedbacks) && activeFeedbacks.length === 0) {
+  if (activeFeedbacks.length === 0) {
     return <></>;
   }
 
@@ -19,7 +19,7 @@ function FeedbackStats({
                       .reduce((a, b) => a + b)
                     ) 
                     / 
-                    feedbacks.length;
+                    activeFeedbacks.length;
   
   return (
     <div className='feedback-stats'>
