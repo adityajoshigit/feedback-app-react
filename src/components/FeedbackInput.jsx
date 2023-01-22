@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import RatingSelect from './RatingSelect';
 import Button from './shared/Button';
 import Card from './shared/Card';
 
@@ -6,6 +7,7 @@ function FeedbackInput({
   onReviewPostClick
 }) {
 
+  const [rating, setRating] = useState(10);
   const [comment, setComment] = useState('');
   const [conditionText, setConditionText] = useState('');
   const [isBtnDisabled, setIsBtnDisabled] = useState(true);
@@ -28,13 +30,21 @@ function FeedbackInput({
       if (comment && comment.trim() && comment.trim().length >= 10) {
         console.log('is valid');
         onReviewPostClick({
-          rating: 10,
+          rating: rating,
           description: comment
         });
-        setComment('');
       }
+      resetReviewData();
+    },
+    onRatingSelect: function (newVal) {
+      setRating(newVal);
     }
   };
+
+  const resetReviewData = function() {
+    setComment('');
+    setRating(10);
+  }
   
 
   return (
@@ -43,6 +53,10 @@ function FeedbackInput({
         <h2>
           How would you rate your overall experience with us?
         </h2>
+        <RatingSelect 
+          onRatingSelect={eventHandlers.onRatingSelect}
+          defaultSelectedValue={rating}
+        />
         <div className='input-group'>
           <input 
             type='text'
