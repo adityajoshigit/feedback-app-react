@@ -254,5 +254,10 @@ input:focus {
 
     .input-group input {
         width: 80%;
+        font-family: 'Poppins', sans-serif;
     }
+}
+
+.input-group input {
+    font-family: 'Poppins', sans-serif;
 }
