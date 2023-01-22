@@ -31,6 +31,7 @@ function FeedbackInput({
           rating: 10,
           description: comment
         });
+        setComment('');
       }
     }
   };

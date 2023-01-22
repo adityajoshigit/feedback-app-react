@@ -26,8 +26,10 @@ function App() {
       console.log(review.description);
       console.log(review.rating);
       if (review && review.description && review.rating) {
-        review.id = Math.random * 1000;
+        console.log('setting id');
+        review.id = Math.floor(Math.random() * 1000 );
       }
+      console.log(review.id);
       setAllFeedbacks([
         ...allFeedbacks, review
       ]);
