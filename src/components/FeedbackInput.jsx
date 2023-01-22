@@ -13,7 +13,7 @@ function FeedbackInput({
   const eventHandlers = {
     onCommentChange: function(e) {
       const value = e.target.value;
-      setComment(value.trim());
+      setComment(value);
       if (value && value.trim() && value.trim().length >= 10) {
         setConditionText('');
         setIsBtnDisabled(false);
@@ -21,13 +21,24 @@ function FeedbackInput({
         setConditionText('Please write at least 10 characters to post your review.');
         setIsBtnDisabled(true);
       }
+    },
+    onFeedbackSubmit: function (e) {
+      e.preventDefault();
+      console.log('submit event fired');
+      if (comment && comment.trim() && comment.trim().length >= 10) {
+        console.log('is valid');
+        onReviewPostClick({
+          rating: 10,
+          description: comment
+        });
+      }
     }
   };
   
 
   return (
     <Card>
-      <form className='feedback-form'>
+      <form onSubmit={eventHandlers.onFeedbackSubmit}>
         <h2>
           How would you rate your overall experience with us?
         </h2>
@@ -42,7 +53,6 @@ function FeedbackInput({
             btnClass='primary' 
             isDisabled={isBtnDisabled} 
             label='Post Review' 
-            onClick={onReviewPostClick} 
             type='submit'
           />
         </div>

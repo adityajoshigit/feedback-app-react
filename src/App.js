@@ -23,6 +23,8 @@ function App() {
     },
     handleReviewPostClick: function (review) {
       console.log(review);
+      console.log(review.description);
+      console.log(review.rating);
       if (review && review.description && review.rating) {
         review.id = Math.random * 1000;
       }
