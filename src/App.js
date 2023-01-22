@@ -1,9 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FeedbackList from "./components/FeedbackList";
 import Header from "./components/Header";
 import FeedbackStats from "./components/FeedbackStats";
 import feedbacks from "./data/feedbackData";
 import FeedbackInput from "./components/FeedbackInput";
+import About from "./pages/About";
 
 function App() {
 
@@ -38,21 +40,36 @@ function App() {
 
 
   return (
-    <>
+    <Router>
       <Header headerTitle={'Any feedback for me..?'}/>
       <div className='container'>
-        <FeedbackInput 
-          onReviewPostClick={eventHandlers.handleReviewPostClick}
-        />
-        <FeedbackStats 
-          feedbacks={allFeedbacks}
-        />
-        <FeedbackList 
-          feedbacks={allFeedbacks} 
-          handleFeedbackDelete={eventHandlers.handleFeedbackDelete}
-        />
+
+        <Routes>
+          <Route exact path="/" element={
+              <>
+                <FeedbackInput 
+                  onReviewPostClick={eventHandlers.handleReviewPostClick}
+                />
+                <FeedbackStats 
+                  feedbacks={allFeedbacks}
+                />
+                <FeedbackList 
+                  feedbacks={allFeedbacks} 
+                  handleFeedbackDelete={eventHandlers.handleFeedbackDelete}
+                />
+              </>
+            } 
+          />
+          <Route 
+            path="/about" 
+            element={
+              <About />
+            }
+          />
+        </Routes>
+
       </div>
-    </>
+    </Router>
   );
 }
 
