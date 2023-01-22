@@ -7,12 +7,9 @@ function Button({
   btnClass,
   label,
   onClick,
-  isDisabled
+  isDisabled,
+  type
 }) {
-  const btnStyle = {
-    backgroundColor: bgColor || 'white',
-    color: textColor || 'black'
-  };
   const disabledFlag = (isDisabled === null || isDisabled === undefined) 
                         ? false
                         : isDisabled;
@@ -20,9 +17,9 @@ function Button({
   return (
     <button 
       onClick={onClick}
-      style={ btnStyle }
-      className={`btn ${btnClass}`}
+      className={`btn btn-${btnClass}`}
       disabled={disabledFlag}
+      type={type}
     >
       {label}
     </button>

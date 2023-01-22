@@ -3,6 +3,7 @@ import FeedbackList from "./components/FeedbackList";
 import Header from "./components/Header";
 import FeedbackStats from "./components/FeedbackStats";
 import feedbacks from "./data/feedbackData";
+import FeedbackInput from "./components/FeedbackInput";
 
 function App() {
 
@@ -19,6 +20,15 @@ function App() {
         });
       });
       setAllFeedbacks(l);
+    },
+    handleReviewPostClick: function (review) {
+      console.log(review);
+      if (review && review.description && review.rating) {
+        review.id = Math.random * 1000;
+      }
+      setAllFeedbacks([
+        ...allFeedbacks, review
+      ]);
     }
   };
 
@@ -27,6 +37,9 @@ function App() {
     <>
       <Header headerTitle={'Any feedback for me..?'}/>
       <div className='container'>
+        <FeedbackInput 
+          onReviewPostClick={eventHandlers.handleReviewPostClick}
+        />
         <FeedbackStats 
           feedbacks={allFeedbacks}
         />
