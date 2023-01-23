@@ -10,6 +10,13 @@ export const FeedbackProvider = ({
     feedbacks
   );
 
+  const [feedbackToEdit, setFeedbackToEdit] = useState(
+    {
+      item: {},
+      edit: false
+    }
+  );
+
   const handleFeedbackDelete = function(feedbackId) {
     console.log('To delete: ' + feedbackId);
     let l = [];
@@ -22,24 +29,46 @@ export const FeedbackProvider = ({
     setFeedbacksList(l);
   };
   
-  const handleReviewPostClick = function (review) {
+  const handleReviewPostClick = function (review, opFlag) {
     console.log(review);
     console.log(review.description);
     console.log(review.rating);
+    let list = [];
     if (review && review.description && review.rating) {
       console.log('setting id');
-      review.id = Math.floor(Math.random() * 1000 );
+      if (opFlag === 'c') {
+        review.id = Math.floor(Math.random() * 1000 );
+        list = [
+          ...feedbacksList, review
+        ];
+      } else if(opFlag === 'u') {
+        feedbacksList.forEach( (item) => {
+          const newItem = {
+            ...item,
+            description: (review.id === item.id) ? review.description : item.description,
+            rating: (review.id === item.id) ? review.rating : item.rating
+          };
+          list.push(newItem);
+        } );
+        setFeedbackToEdit({ item: {}, edit: false});
+      }
+      console.log(opFlag + '_' + review.id);
+      setFeedbacksList(list);
     }
-    console.log(review.id);
-    setFeedbacksList([
-      ...feedbacksList, review
-    ]);
   };
+
+  const handleEditFeedback = function(reviewObj) {
+    setFeedbackToEdit({ item: reviewObj, edit: true });
+  }
 
   return (
     <FeedbackContext.Provider value={
       {
-        feedbacksList, handleFeedbackDelete, handleReviewPostClick
+        feedbackToEdit,
+        feedbacksList, 
+        handleFeedbackDelete, 
+        handleReviewPostClick,
+        handleEditFeedback
       }
     }>
       {children}

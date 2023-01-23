@@ -1,18 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import RatingSelect from './RatingSelect';
 import Button from './shared/Button';
 import Card from './shared/Card';
-import { useContext } from 'react';
 import FeedbackContext from '../context/FeedbackContext';
 
 function FeedbackInput() {
-
-  const { handleReviewPostClick } = useContext(FeedbackContext);
 
   const [rating, setRating] = useState(10);
   const [comment, setComment] = useState('');
   const [conditionText, setConditionText] = useState('');
   const [isBtnDisabled, setIsBtnDisabled] = useState(true);
+  const [postBtnLabel, setPostBtnLabel] = useState('Post');
+
+  const { 
+    handleReviewPostClick ,
+    feedbackToEdit
+  } = useContext(FeedbackContext);
+
+  useEffect(() => {
+      if (feedbackToEdit && feedbackToEdit.item && feedbackToEdit.edit) {
+        updateFeedbackFormData({
+          ...(feedbackToEdit.item)
+        });
+        setIsBtnDisabled(false);
+        setPostBtnLabel('Update');
+      }
+    }, 
+    [feedbackToEdit]
+  );
+
 
   const eventHandlers = {
     onCommentChange: function(e) {
@@ -32,20 +48,23 @@ function FeedbackInput() {
       if (comment && comment.trim() && comment.trim().length >= 10) {
         console.log('is valid');
         handleReviewPostClick({
+          ...(feedbackToEdit.item),
           rating: rating,
           description: comment
-        });
+        }, (postBtnLabel === 'Update') ? 'u' : 'c');
       }
-      resetReviewData();
+      updateFeedbackFormData({ description: '', rating: 10 });
     },
     onRatingSelect: function (newVal) {
       setRating(newVal);
     }
   };
 
-  const resetReviewData = function() {
-    setComment('');
-    setRating(10);
+  const updateFeedbackFormData = function(obj) {
+    setComment(obj.description);
+    setRating(obj.rating);
+    setPostBtnLabel('Post');
+    setIsBtnDisabled(true);
   }
   
 
@@ -57,7 +76,6 @@ function FeedbackInput() {
         </h2>
         <RatingSelect 
           onRatingSelect={eventHandlers.onRatingSelect}
-          defaultSelectedValue={rating}
         />
         <div className='input-group'>
           <input 
@@ -69,7 +87,7 @@ function FeedbackInput() {
           <Button 
             btnClass='primary' 
             isDisabled={isBtnDisabled} 
-            label='Post Review' 
+            label={postBtnLabel} 
             type='submit'
           />
         </div>

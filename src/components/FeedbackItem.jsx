@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types';
 import Card from './shared/Card';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaEdit } from 'react-icons/fa';
 import { useContext } from 'react';
 import FeedbackContext from '../context/FeedbackContext';
 
 function FeedbackItem({
   item
 }) {
-  const { handleFeedbackDelete } = useContext(FeedbackContext);
+  const { handleFeedbackDelete, handleEditFeedback } = useContext(FeedbackContext);
 
   const handleCloseClick = function() {
     handleFeedbackDelete(item.id);
+  }
+
+  const handleInlineEditFeedback = function () {
+    handleEditFeedback(item);
   }
 
   return (
@@ -23,6 +27,12 @@ function FeedbackItem({
         onClick={handleCloseClick}
       >
         <FaTimes color='purple' />
+      </button>
+      <button 
+        className="edit"
+        onClick={handleInlineEditFeedback}
+      >
+        <FaEdit color='purple' />
       </button>
       <div className='text-display'>
         {item.description}
