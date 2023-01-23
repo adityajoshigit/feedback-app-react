@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import RatingSelect from './RatingSelect';
 import Button from './shared/Button';
 import Card from './shared/Card';
+import { useContext } from 'react';
+import FeedbackContext from '../context/FeedbackContext';
 
-function FeedbackInput({
-  onReviewPostClick
-}) {
+function FeedbackInput() {
+
+  const { handleReviewPostClick } = useContext(FeedbackContext);
 
   const [rating, setRating] = useState(10);
   const [comment, setComment] = useState('');
@@ -29,7 +31,7 @@ function FeedbackInput({
       console.log('submit event fired');
       if (comment && comment.trim() && comment.trim().length >= 10) {
         console.log('is valid');
-        onReviewPostClick({
+        handleReviewPostClick({
           rating: rating,
           description: comment
         });

@@ -1,13 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types';
-function FeedbackStats({
-  feedbacks
-}) {
-  if (!Boolean(feedbacks)) {
+import { useContext } from 'react';
+import FeedbackContext from '../context/FeedbackContext';
+
+function FeedbackStats() {
+  const { feedbacksList } = useContext(FeedbackContext);
+
+  if (!Boolean(feedbacksList)) {
     return <></>;
   }
 
-  const activeFeedbacks = feedbacks.filter(item => !item.isDeleted);
+  const activeFeedbacks = feedbacksList.filter(item => !item.isDeleted);
 
   if (activeFeedbacks.length === 0) {
     return <></>;
@@ -32,13 +34,5 @@ function FeedbackStats({
     </div>
   )
 }
-
-FeedbackStats.defaultProps = {
-  feedbacks: []
-};
-
-FeedbackStats.propTypes = {
-  feedbacks: PropTypes.array.isRequired
-};
 
 export default FeedbackStats
