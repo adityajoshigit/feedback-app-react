@@ -1,5 +1,4 @@
-import { createContext, useState } from 'react';
-import feedbacks from '../data/feedbackData';
+import { createContext, useState, useEffect } from 'react';
 
 const FeedbackContext = createContext();
 
@@ -7,7 +6,7 @@ export const FeedbackProvider = ({
   children
 }) => {
   const [feedbacksList, setFeedbacksList] = useState(
-    feedbacks
+    []
   );
 
   const [feedbackToEdit, setFeedbackToEdit] = useState(
@@ -16,6 +15,42 @@ export const FeedbackProvider = ({
       edit: false
     }
   );
+
+  // Get data on page load
+  useEffect(
+    () => {
+      getDataFromServer();
+    },
+    []
+  );
+
+  const getDataFromServer = async function () {
+    const reqData = {
+      url: `http://localhost:5000/feedbackData?_sort=id&_order=desc`,
+      method: 'GET',
+      contentType: 'application/json'
+    };
+    const response = await serverRequests.get(reqData);
+    const dataList = await response.json();
+    console.log(dataList);
+    if (dataList) {
+      setFeedbacksList(dataList);
+    }
+  }
+
+  const serverRequests = {
+    get: async function (reqData) {
+      return fetch(
+        reqData.url,
+        {
+          method: reqData.method,
+          headers: {
+            'Content-Type': reqData.contentType
+          }
+        }
+      );
+    },
+  };
 
   const handleFeedbackDelete = function(feedbackId) {
     console.log('To delete: ' + feedbackId);
