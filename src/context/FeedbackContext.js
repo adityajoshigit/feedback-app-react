@@ -18,48 +18,60 @@ export const FeedbackProvider = ({
     }
   );
 
+  // const serverRequests = {
+  //   get: async function (reqData) {
+  //     return fetch(
+  //       reqData.url,
+  //       {
+  //         method: reqData.method,
+  //         headers: {
+  //           'Content-Type': reqData.contentType
+  //         }
+  //       }
+  //     );
+  //   },
+  // };
+
   // Get data on page load
   useEffect(
     () => {
+      const getDataFromServer = async function () {
+        setIsLoading(true);
+        const reqData = {
+          url: `http://localhost:5000/feedbackData?_sort=id&_order=desc`,
+          method: 'GET',
+          contentType: 'application/json'
+        };
+        try {
+          const response = await fetch(
+            reqData.url,
+            {
+              method: reqData.method,
+              headers: {
+                'Content-Type': reqData.contentType
+              }
+            }
+          ).get(reqData);
+          const dataList = await response.json();
+          console.log(dataList);
+          if (dataList) {
+            setFeedbacksList(dataList);
+          }
+        } catch (error) {
+          
+        } finally {
+          setIsLoading(false);
+        }
+      }
       getDataFromServer();
     },
     []
   );
 
-  const getDataFromServer = async function () {
-    setIsLoading(true);
-    const reqData = {
-      url: `http://localhost:5000/feedbackData?_sort=id&_order=desc`,
-      method: 'GET',
-      contentType: 'application/json'
-    };
-    try {
-      const response = await serverRequests.get(reqData);
-      const dataList = await response.json();
-      console.log(dataList);
-      if (dataList) {
-        setFeedbacksList(dataList);
-      }
-    } catch (error) {
-      
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  
 
-  const serverRequests = {
-    get: async function (reqData) {
-      return fetch(
-        reqData.url,
-        {
-          method: reqData.method,
-          headers: {
-            'Content-Type': reqData.contentType
-          }
-        }
-      );
-    },
-  };
+  
+
 
   const handleFeedbackDelete = function(feedbackId) {
     console.log('To delete: ' + feedbackId);
