@@ -18,34 +18,21 @@ export const FeedbackProvider = ({
     }
   );
 
-  // const serverRequests = {
-  //   get: async function (reqData) {
-  //     return fetch(
-  //       reqData.url,
-  //       {
-  //         method: reqData.method,
-  //         headers: {
-  //           'Content-Type': reqData.contentType
-  //         }
-  //       }
-  //     );
-  //   },
-  // };
+  const apiCallout = function(reqData) {
+    return fetch(
+      reqData.url,
+      {
+        method: reqData.method,
+        headers: {
+          'Content-Type': reqData.contentType
+        }
+      }
+    );
+  };
 
   // Get data on page load
   useEffect(
     () => {
-      const fetchData = function(reqData) {
-        return fetch(
-          reqData.url,
-          {
-            method: reqData.method,
-            headers: {
-              'Content-Type': reqData.contentType
-            }
-          }
-        );
-      };
       const getDataFromServer = async function () {
         setIsLoading(true);
         const reqData = {
@@ -54,7 +41,7 @@ export const FeedbackProvider = ({
           contentType: 'application/json'
         };
         try {
-          const response = (await fetchData(reqData));
+          const response = (await apiCallout(reqData));
           const dataList = await response.json();
           console.log(dataList);
           if (dataList) {
