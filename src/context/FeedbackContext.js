@@ -5,6 +5,8 @@ const FeedbackContext = createContext();
 export const FeedbackProvider = ({
   children
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const [feedbacksList, setFeedbacksList] = useState(
     []
   );
@@ -25,6 +27,7 @@ export const FeedbackProvider = ({
   );
 
   const getDataFromServer = async function () {
+    setIsLoading(true);
     const reqData = {
       url: `http://localhost:5000/feedbackData?_sort=id&_order=desc`,
       method: 'GET',
@@ -36,6 +39,7 @@ export const FeedbackProvider = ({
     if (dataList) {
       setFeedbacksList(dataList);
     }
+    setIsLoading(false);
   }
 
   const serverRequests = {
@@ -100,7 +104,8 @@ export const FeedbackProvider = ({
     <FeedbackContext.Provider value={
       {
         feedbackToEdit,
-        feedbacksList, 
+        feedbacksList,
+        isLoading, 
         handleFeedbackDelete, 
         handleReviewPostClick,
         handleEditFeedback
