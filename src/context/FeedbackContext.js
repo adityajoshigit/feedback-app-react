@@ -61,6 +61,7 @@ export const FeedbackProvider = ({
           
         } finally {
           setIsLoading(false);
+          console.log('--test--');
         }
       }
       getDataFromServer();
