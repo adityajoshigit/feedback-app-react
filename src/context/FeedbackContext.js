@@ -35,6 +35,17 @@ export const FeedbackProvider = ({
   // Get data on page load
   useEffect(
     () => {
+      const fetchData = function(reqData) {
+        return fetch(
+          reqData.url,
+          {
+            method: reqData.method,
+            headers: {
+              'Content-Type': reqData.contentType
+            }
+          }
+        );
+      };
       const getDataFromServer = async function () {
         setIsLoading(true);
         const reqData = {
@@ -43,22 +54,14 @@ export const FeedbackProvider = ({
           contentType: 'application/json'
         };
         try {
-          const response = await fetch(
-            reqData.url,
-            {
-              method: reqData.method,
-              headers: {
-                'Content-Type': reqData.contentType
-              }
-            }
-          ).get(reqData);
+          const response = (await fetchData(reqData));
           const dataList = await response.json();
           console.log(dataList);
           if (dataList) {
             setFeedbacksList(dataList);
           }
         } catch (error) {
-          
+          console.log(error);
         } finally {
           setIsLoading(false);
           console.log('--test--');
