@@ -33,13 +33,18 @@ export const FeedbackProvider = ({
       method: 'GET',
       contentType: 'application/json'
     };
-    const response = await serverRequests.get(reqData);
-    const dataList = await response.json();
-    console.log(dataList);
-    if (dataList) {
-      setFeedbacksList(dataList);
+    try {
+      const response = await serverRequests.get(reqData);
+      const dataList = await response.json();
+      console.log(dataList);
+      if (dataList) {
+        setFeedbacksList(dataList);
+      }
+    } catch (error) {
+      
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }
 
   const serverRequests = {
