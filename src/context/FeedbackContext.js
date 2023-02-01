@@ -6,7 +6,6 @@ export const FeedbackProvider = ({
   children
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-
   const [feedbacksList, setFeedbacksList] = useState(
     []
   );
@@ -18,89 +17,119 @@ export const FeedbackProvider = ({
     }
   );
 
-  const apiCallout = function(reqData) {
+  const apiCallout = function({
+    method,
+    body,
+    contentType,
+    url
+  }) {
+    let reqParams = {
+      method: method,
+      headers: {
+        'Content-Type': contentType
+      },
+    };
+    if (body) {
+      reqParams = {
+        ...reqParams, 
+        body: JSON.stringify(body)
+      };
+    }
     return fetch(
-      reqData.url,
-      {
-        method: reqData.method,
-        headers: {
-          'Content-Type': reqData.contentType
-        }
-      }
+      url,
+      reqParams
     );
   };
+
+
+  const getAllFeedbacks = async function () {
+    const reqData = {
+      url: `/feedbackData?_sort=id&_order=desc`,
+      method: 'GET',
+      contentType: 'application/json'
+    };
+    let dataList = [];
+    try {
+      const response = (await apiCallout(reqData));
+      dataList = await response.json();
+    } catch (error) {
+      console.log(error);
+    }
+    return dataList;
+  }
 
   // Get data on page load
   useEffect(
     () => {
-      const getDataFromServer = async function () {
-        setIsLoading(true);
-        const reqData = {
-          url: `http://localhost:5000/feedbackData?_sort=id&_order=desc`,
-          method: 'GET',
-          contentType: 'application/json'
-        };
-        try {
-          const response = (await apiCallout(reqData));
+      const getData = async () => {
+          const response = (await apiCallout({
+            url: `/feedbackData?_sort=id&_order=desc`,
+            method: 'GET',
+            contentType: 'application/json'
+          }));
           const dataList = await response.json();
-          console.log(dataList);
           if (dataList) {
             setFeedbacksList(dataList);
           }
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setIsLoading(false);
-          console.log('--test--');
-        }
-      }
-      getDataFromServer();
+      };
+      (async function () {
+        setIsLoading(true);
+        await getData();
+        setIsLoading(false);
+      })();
+      // }
     },
     []
   );
 
-  
-
-  
-
-
   const handleFeedbackDelete = function(feedbackId) {
-    console.log('To delete: ' + feedbackId);
-    let l = [];
-    feedbacksList.forEach(item => {
-      l.push({
-        ...item, 
-        isDeleted: ( (item.id === feedbackId) ? true : item.isDeleted )
-      });
+    apiCallout({
+      url: `/feedbackData/${feedbackId}`,
+      method: 'DELETE'
     });
-    setFeedbacksList(l);
+    console.log('To delete: ' + feedbackId);
+    
+    getAllFeedbacks()
+      .then(res => setFeedbacksList(res));
+    
   };
   
-  const handleReviewPostClick = function (review, opFlag) {
-    console.log(review);
-    console.log(review.description);
-    console.log(review.rating);
+  const handleReviewPostClick = async function (review, opFlag) {
     let list = [];
     if (review && review.description && review.rating) {
-      console.log('setting id');
+      let reqData = {
+        url: '/feedbackData',
+        method: 'POST',
+        contentType: 'application/json',
+        body: review
+      };
+      setIsLoading(true);
       if (opFlag === 'c') {
-        review.id = Math.floor(Math.random() * 1000 );
+        const response = (await apiCallout(reqData));
+        const result = await response.json();
+        
         list = [
-          ...feedbacksList, review
+          ...feedbacksList, result
         ];
       } else if(opFlag === 'u') {
+        reqData.url = `/feedbackData/${review.id}`;
+        reqData.method = 'PUT';
+        const response = (await apiCallout(reqData));
+        const updatedDataItem = await response.json();
+        
         feedbacksList.forEach( (item) => {
           const newItem = {
             ...item,
-            description: (review.id === item.id) ? review.description : item.description,
-            rating: (review.id === item.id) ? review.rating : item.rating
+            description: (review.id === item.id) ? updatedDataItem.description : item.description,
+            rating: (review.id === item.id) ? updatedDataItem.rating : item.rating
           };
           list.push(newItem);
         } );
         setFeedbackToEdit({ item: {}, edit: false});
       }
-      console.log(opFlag + '_' + review.id);
+      // console.log(list);
       setFeedbacksList(list);
+      setIsLoading(false);
     }
   };
 
