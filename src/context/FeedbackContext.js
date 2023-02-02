@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { 
+  isLive,
   getAll, 
   postFeedback, 
   putFeedback, 
@@ -25,11 +26,11 @@ export const FeedbackProvider = ({
     }
   );
 
-
   // Get data on page load
   useEffect(
     () => {
       const getData = async () => {
+        if (isLive) {
           const response = (await apiCallout({
             url: `http://localhost:5000/feedbackData?_sort=id&_order=desc`,
             method: 'GET',
@@ -39,6 +40,9 @@ export const FeedbackProvider = ({
           if (dataList) {
             setFeedbacksList(dataList);
           }
+        } else {
+          setFeedbacksList(await getAll());
+        }
       };
       (async function () {
         setIsLoading(true);

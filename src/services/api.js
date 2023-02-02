@@ -1,5 +1,10 @@
+import feedbacks from "../data/feedbackData";
+
+const isLive = false;
 const CONTENT_TYPE = 'application/json';
 const BASE_URL = 'http://localhost:5000/feedbackData';
+
+let staticFeedbacks = feedbacks.map(e => e);
 
 let reqData = {
   url: BASE_URL,
@@ -68,15 +73,46 @@ const feedbackAPIOps = {
   }
 };
 
-const getAll = feedbackAPIOps.readAll;
-const postFeedback = feedbackAPIOps.add;
-const putFeedback = feedbackAPIOps.update;
-const deleteFeedback = feedbackAPIOps.delete;
+const staticOps = {
+  readAll : async function () {
+    console.log(staticFeedbacks);
+    return staticFeedbacks;
+  },
+  add : async function(feedback) {
+    const id = Math.floor(Math.random() * 10245) + Math.floor(Math.random() * 2411);
+    const newElem = {
+      id, ...feedback
+    };
+    staticFeedbacks.push(newElem);
+    return newElem;
+  },
+  update : async function(feedback) {
+    staticFeedbacks = staticFeedbacks.map(f => {
+      if(f.id === feedback.id) {
+        return feedback;
+      } else {
+        return f;
+      }
+    });
+    return feedback;
+  },
+  delete : async function(feedbackId) {
+    staticFeedbacks = staticFeedbacks.filter(f => f.id != feedbackId);
+    return true;
+  },
+};
 
+const handler = isLive ? feedbackAPIOps : staticOps ;
+
+const getAll = handler.readAll;
+const postFeedback = handler.add;
+const putFeedback = handler.update;
+const deleteFeedback = handler.delete;
 
 export { 
   BASE_URL, 
   CONTENT_TYPE, 
+  isLive,
   reqData, 
   apiCallout,
   getAll,
