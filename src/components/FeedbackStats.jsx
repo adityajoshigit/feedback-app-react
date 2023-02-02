@@ -15,13 +15,15 @@ function FeedbackStats() {
     return <></>;
   }
 
-  const avgRating = ( 
-                      activeFeedbacks
-                      .map(item => item.rating)
-                      .reduce((a, b) => a + b)
-                    ) 
-                    / 
-                    activeFeedbacks.length;
+  const avgRating = (
+                      ( 
+                        activeFeedbacks
+                        .map(item => item.rating)
+                        .reduce((a, b) => a + b)
+                      ) 
+                      / 
+                      activeFeedbacks.length
+                    ).toFixed(2);
   
   return (
     <div className='feedback-stats'>
