@@ -1,19 +1,9 @@
 {
   "feedbackData": [
     {
-      "rating": 6,
-      "description": "Moderate review.. can make it digital though!",
-      "id": 1
-    },
-    {
-      "rating": 10,
-      "description": "I just loved it!!! Thanks so much!",
-      "id": 2
-    },
-    {
-      "rating": 9,
-      "description": "I think you should start a business!",
-      "id": 3
+      "rating": 7,
+      "description": "some greate content",
+      "id": 9
     }
   ]
 }
