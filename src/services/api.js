@@ -1,5 +1,11 @@
 import feedbacks from "../data/feedbackData";
 
+const start = Date.now();
+let millis = 0;
+setInterval(() => {
+  millis = Math.floor((Date.now() - start) / 1000);
+}, 2000);
+
 const isLive = false;
 const CONTENT_TYPE = 'application/json';
 const BASE_URL = 'http://localhost:5000/feedbackData';
@@ -79,7 +85,7 @@ const staticOps = {
     return staticFeedbacks;
   },
   add : async function(feedback) {
-    const id = Math.floor(Math.random() * 10245) + Math.floor(Math.random() * 2411);
+    const id = Math.floor(Math.random() * 10245) + Math.floor(Math.random() * 2411) + millis;
     const newElem = {
       id, ...feedback
     };
@@ -97,7 +103,7 @@ const staticOps = {
     return feedback;
   },
   delete : async function(feedbackId) {
-    staticFeedbacks = staticFeedbacks.filter(f => f.id != feedbackId);
+    staticFeedbacks = staticFeedbacks.filter(f => f.id !== feedbackId);
     return true;
   },
 };
