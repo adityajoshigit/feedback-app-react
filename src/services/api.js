@@ -1,16 +1,22 @@
-import feedbacks from "../data/feedbackData";
+// import feedbacks from "../data/feedbackData";
+import { 
+  getLocal ,
+  setLocal,
+  // removeLocal,
+  // clearLocal
+} from "./storageOps";
+
+let staticFeedbacks;
 
 const start = Date.now();
 let millis = 0;
 setInterval(() => {
   millis = Math.floor((Date.now() - start) / 1000);
-}, 2000);
+}, 1000);
 
 const isLive = false;
 const CONTENT_TYPE = 'application/json';
 const BASE_URL = 'http://localhost:5000/feedbackData';
-
-let staticFeedbacks = feedbacks.map(e => e);
 
 let reqData = {
   url: BASE_URL,
@@ -81,6 +87,7 @@ const feedbackAPIOps = {
 
 const staticOps = {
   readAll : async function () {
+    staticFeedbacks = getLocal('feedbacks') || [];
     console.log(staticFeedbacks);
     return staticFeedbacks;
   },
@@ -89,6 +96,8 @@ const staticOps = {
     const newElem = {
       id, ...feedback
     };
+    staticFeedbacks = [...staticFeedbacks, newElem];
+    setLocal('feedbacks', staticFeedbacks);
     return newElem;
   },
   update : async function(feedback) {
@@ -99,10 +108,12 @@ const staticOps = {
         return f;
       }
     });
+    setLocal('feedbacks', staticFeedbacks);
     return feedback;
   },
   delete : async function(feedbackId) {
     staticFeedbacks = staticFeedbacks.filter(f => f.id !== feedbackId);
+    setLocal('feedbacks', staticFeedbacks);
     return true;
   },
 };

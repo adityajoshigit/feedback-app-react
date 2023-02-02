@@ -56,10 +56,12 @@ export const FeedbackProvider = ({
 
   const handleFeedbackDelete = async function(feedbackId) {
     setIsLoading(true);
-    await deleteFeedback(feedbackId);
-    setFeedbacksList(
-      await getAll()
-    );
+    const ret = await deleteFeedback(feedbackId);
+    if (ret) {
+      setFeedbacksList(
+        feedbacksList.filter(f => f.id !== feedbackId)
+      );
+    }
     setIsLoading(false);
   };
   
