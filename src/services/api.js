@@ -89,7 +89,6 @@ const staticOps = {
     const newElem = {
       id, ...feedback
     };
-    staticFeedbacks.push(newElem);
     return newElem;
   },
   update : async function(feedback) {
